@@ -1,0 +1,29 @@
+<!-- google-callback.html -->
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Connecting AbhiSteno...</title>
+</head>
+<body>
+  <p id="status">Connecting your Google account back to AbhiSteno...</p>
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const code = params.get('code');
+    const error = params.get('error');
+
+    if (error) {
+      document.getElementById('status').textContent =
+        'Google sign-in failed: ' + error + '. You can close this tab and try again.';
+    } else if (code) {
+      const redirectUrl = 'abhisteno://google-callback?code=' + encodeURIComponent(code);
+      window.location.href = redirectUrl;
+      document.getElementById('status').textContent =
+        'Redirecting back to AbhiSteno... if nothing happens, open the app manually.';
+    } else {
+      document.getElementById('status').textContent =
+        'No authorization code received. You can close this tab and try again.';
+    }
+  </script>
+</body>
+</html>
