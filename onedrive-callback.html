@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>AbhiSteno — Connecting OneDrive</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+      background: #0f2744;
+      color: #ffffff;
+      text-align: center;
+    }
+    .box { max-width: 320px; padding: 24px; }
+    .spinner {
+      width: 32px; height: 32px;
+      border: 3px solid rgba(255,255,255,0.2);
+      border-top-color: #14b8a6;
+      border-radius: 50%;
+      margin: 0 auto 16px;
+      animation: spin 0.8s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    p { font-size: 14px; color: #cbd5e1; }
+  </style>
+</head>
+<body>
+  <div class="box">
+    <div class="spinner"></div>
+    <p id="msg">Connecting your OneDrive account…</p>
+  </div>
+  <script>
+    (function () {
+      const params = new URLSearchParams(window.location.search);
+      const code = params.get('code');
+      const error = params.get('error');
+      const msgEl = document.getElementById('msg');
+
+      if (error) {
+        msgEl.textContent = 'OneDrive connection failed: ' + error;
+        return;
+      }
+
+      if (!code) {
+        msgEl.textContent = 'No authorization code received.';
+        return;
+      }
+
+      // Bounce the code into the app via its custom URL scheme —
+      // this is what lib.rs's on_open_url handler listens for.
+      const appUrl = 'abhisteno://onedrive-callback?code=' + encodeURIComponent(code);
+      window.location.href = appUrl;
+
+      msgEl.textContent = 'Redirecting back to AbhiSteno…';
+
+      // Fallback in case the OS doesn't auto-switch apps immediately
+      setTimeout(function () {
+        msgEl.innerHTML = 'If nothing happened, <a href="' + appUrl + '" style="color:#14b8a6;">tap here to return to AbhiSteno</a>.';
+      }, 2000);
+    })();
+  </script>
+</body>
+</html>
