@@ -3,10 +3,10 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title>Connecting AbhiSteno...</title>
+  <title>Connecting GrassStudio...</title>
 </head>
 <body>
-  <p id="status">Connecting your OneDrive account back to AbhiSteno...</p>
+  <p id="status">Connecting your OneDrive account back to GrassStudio...</p>
   <script>
     const params = new URLSearchParams(window.location.search);
     const code = params.get('code');
@@ -15,10 +15,10 @@
       document.getElementById('status').textContent =
         'OneDrive sign-in failed: ' + error + '. You can close this tab and try again.';
     } else if (code) {
-      const redirectUrl = 'abhisteno://onedrive-callback?code=' + encodeURIComponent(code);
+      const redirectUrl = 'grassstudio://onedrive-callback?code=' + encodeURIComponent(code);
       window.location.href = redirectUrl;
       document.getElementById('status').textContent =
-        'Redirecting back to AbhiSteno... if nothing happens, open the app manually.';
+        'Redirecting back to GrassStudio... if nothing happens, open the app manually.';
     } else {
       document.getElementById('status').textContent =
         'No authorization code received. You can close this tab and try again.';
